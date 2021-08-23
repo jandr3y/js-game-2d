@@ -20,4 +20,12 @@ class Game {
     this.gameloop();
   }
 
+  event(cb, timeout) {
+    if ( !cb || !timeout ) {
+      throw new Error('Specify callback and timeout');
+    }
+
+    setInterval(cb, timeout);
+  }
+
 }

@@ -23,10 +23,17 @@ class Player {
     });
   }
 
-  render() {
+  render(pos) {
 
-    const canvasX = (this.game.canvas.width / 2) - 16;
-    const canvasY = (this.game.canvas.height / 2) - 16;
+    let canvasX, canvasY = 0;
+
+    if ( pos ) {
+      canvasX = (pos.x / 30);
+      canvasY = (pos.y / 20);
+    } else {
+      canvasX = (this.game.canvas.width / 2) - 16;
+      canvasY = (this.game.canvas.height / 2) - 16;
+    }
 
     this.tick++;
 

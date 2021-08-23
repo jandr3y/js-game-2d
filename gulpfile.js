@@ -5,11 +5,14 @@ const clean = require('gulp-clean');
 const uglify = require('gulp-uglify');
 const template = require('gulp-template');
 
+const BUILD_PATH = './src/server/client';
+const SRC_PATH = 'src/client';
+
 const buildVersion = 'g-' + (new Date()).getTime();
 
 function cleaner(cb) {
   src([
-    'dist'
+    'src/server/client'
   ], { read: false, allowEmpty: true })
   .pipe(clean());
 
@@ -19,49 +22,57 @@ function cleaner(cb) {
 function buildJS(cb) {
 
   src([
-    'src/client/common.js',
-    'src/client/engine/Game.js',
-    'src/client/engine/Camera.js',
-    'src/client/engine/Map.js',
-    'src/client/engine/Keyboard.js',
-    'src/client/engine/Player.js',
-    'src/client/script.js',
+    SRC_PATH + '/common.js',
+    SRC_PATH + '/engine/Game.js',
+    SRC_PATH + '/engine/Camera.js',
+    SRC_PATH + '/engine/Map.js',
+    SRC_PATH + '/engine/Keyboard.js',
+    SRC_PATH + '/engine/Player.js',
+    SRC_PATH + '/script.js',
   ])
   .pipe(concat(buildVersion + '.js'))
   .pipe(uglify())
   .pipe(minify())
-  .pipe(dest('./dist/client'));
+  .pipe(dest(BUILD_PATH));
 
   cb();
 }
 
 function buildAssets(cb) {
   src([
-    'src/client/assets/map_one.json',
-    'src/client/assets/map_two.json',
-    'src/client/assets/tileset.png',
-    'src/client/assets/base_out_atlas.png',
-    'src/client/assets/person.png',
+    SRC_PATH + '/assets/map_one.json',
+    SRC_PATH + '/assets/map_two.json',
+    SRC_PATH + '/assets/tileset.png',
+    SRC_PATH + '/assets/base_out_atlas.png',
+    SRC_PATH + '/assets/person.png',
   ])
-  .pipe(dest('./dist/client/assets'));
+  .pipe(dest(BUILD_PATH + '/assets'));
 
   cb();
 }
 
 function buildHTML(cb) {
   src([
-    'src/client/index.html'
+    SRC_PATH + '/index.html'
   ])
   .pipe(template({ filename: buildVersion }))
-  .pipe(dest('./dist/client'))
+  .pipe(dest(BUILD_PATH))
 
   cb();
 }
 
 function buildCSS(cb) {
   src([
-    'src/client/style.css'
-  ]).pipe(dest('./dist/client'));
+    SRC_PATH + '/style.css'
+  ]).pipe(dest(BUILD_PATH));
+
+  cb();
+}
+
+function development(cb) {
+  watch([
+    SRC_PATH
+  ], series(cleaner, buildJS, buildCSS, buildAssets, buildHTML));
 
   cb();
 }
@@ -69,3 +80,5 @@ function buildCSS(cb) {
 exports.clean = cleaner;
 
 exports.build = series(cleaner, buildJS, buildCSS, buildAssets, buildHTML);
+
+exports.watch = development;
