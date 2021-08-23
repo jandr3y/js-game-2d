@@ -1,20 +1,25 @@
 class Map {
   constructor(game) {
-    this.tilemap = null;
-    this.tileset = new Image();
-    this.tileSize = 32;
-    this.game = game;
+    this.tilemap      = null;
+    this.tileset      = new Image();
+    this.tileSize     = 32;
+    this.game         = game;
+    this.imageColumns = 0;
+    this.mapColumns   = 100;
   }
 
   load() {
     return new Promise((resolve, reject) => {
 
-      fetchLocal('assets/map_one.json')
+      fetchLocal('assets/map_two.json')
         .then( response => response.json() )
         .then( jsonMap => {
           this.tilemap = jsonMap;
-          this.tileset.src = 'assets/tileset.png';
-          this.tileset.addEventListener('load', () => resolve());
+          this.tileset.src = 'assets/base_out_atlas.png';
+          this.tileset.addEventListener('load', () => {
+            this.imageColumns = this.tileset.width / this.tileSize;
+            resolve()
+          });
         })
     })
   }
@@ -28,12 +33,12 @@ class Map {
 
     const IMAGE_COLUMNS = this.tileset.width / this.tileSize;
 
-    var startCol = Math.floor(camera.x / this.tileSize);
-    var endCol = startCol + (camera.width / this.tileSize);
-    var startRow = Math.floor(camera.y / this.tileSize);
-    var endRow = startRow + (camera.height / this.tileSize);
-    var offsetX = -camera.x + startCol * this.tileSize;
-    var offsetY = -camera.y + startRow * this.tileSize;
+    var startCol  = Math.floor(camera.x / this.tileSize);
+    var endCol    = startCol + (camera.width / this.tileSize);
+    var startRow  = Math.floor(camera.y / this.tileSize);
+    var endRow    = startRow + (camera.height / this.tileSize);
+    var offsetX   = -camera.x + startCol * this.tileSize;
+    var offsetY   = -camera.y + startRow * this.tileSize;
     let tileIndex = 0;
 
     const layersCount = Array.from(this.tilemap.layers).length;
@@ -46,7 +51,7 @@ class Map {
         }
       }
 
-      tileIndex = (startRow * 100) + startCol;
+      tileIndex = (startRow * this.mapColumns) + startCol;
       
       for ( let r = startRow; r < endRow; r++) {
         for ( let c = startCol; c < endCol; c++ ) {
@@ -83,7 +88,8 @@ class Map {
   
           tileIndex++;
         }
-        tileIndex += 70; // Descobrir o 100
+
+        tileIndex += this.mapColumns - (this.game.canvas.width / this.tileSize); // Descobrir o 100
         
         this.lastTileIndex = tileIndex;
       }

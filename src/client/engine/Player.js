@@ -1,18 +1,19 @@
 class Player {
-  constructor(game) {
-    this.sprite = new Image();
-    this.game = game;
-    this.spriteSize = 32;
-    this.tick = 0;
+  constructor(game, settings = {}) {
+    this.sprite       = new Image();
+    this.game         = game;
+    this.spriteSize   = 32;
+    this.tick         = 0;
     this.tickPerFrame = 10;
-    this.frameIndex = 0;
-    this.maxFrame = 3;
-    this.direction = 0;
-    this.speed = 0;
-    this.maxX = (100 * map.tileSize) - game.canvas.width;
-    this.maxY = (100 * map.tileSize) - game.canvas.height;
-    this.x = 300;
-    this.y = 400;
+    this.frameIndex   = 0;
+    this.maxFrame     = 3;
+    this.direction    = 0;
+    this.speed        = 0;
+    this.maxX         = (100 * map.tileSize) - game.canvas.width;
+    this.maxY         = (100 * map.tileSize) - game.canvas.height;
+    this.x            = 800;
+    this.y            = 2200;
+    this.settings     = settings;
   }
 
   load() {
@@ -40,12 +41,22 @@ class Player {
 
     if ( this.speed > 4 ) {
       this.tickPerFrame = 3;
-      this.game.context.drawImage(this.sprite, this.frameIndex * 32, this.direction * 32, 32, 32, canvasX, canvasY, 32, 32);
+      this.game.context.drawImage(
+        this.sprite, 
+        this.frameIndex * this.spriteSize, 
+        this.direction * this.spriteSize, 
+        this.spriteSize, 
+        this.spriteSize, 
+        canvasX, 
+        canvasY, 
+        this.spriteSize, 
+        this.spriteSize
+      );
     } else if ( this.speed > 0 ) {
       this.tickPerFrame = 10;
-      this.game.context.drawImage(this.sprite, this.frameIndex * 32, this.direction * 32, 32, 32, canvasX, canvasY, 32, 32);
+      this.game.context.drawImage(this.sprite, this.frameIndex * this.spriteSize, this.direction * this.spriteSize, this.spriteSize, this.spriteSize, canvasX, canvasY, this.spriteSize, this.spriteSize);
     } else {
-      this.game.context.drawImage(this.sprite, 32, this.direction * 32, 32, 32, canvasX, canvasY, 32, 32);
+      this.game.context.drawImage(this.sprite, this.spriteSize, this.direction * this.spriteSize, this.spriteSize, this.spriteSize, canvasX, canvasY, this.spriteSize, this.spriteSize);
     }
 
   }
@@ -60,29 +71,28 @@ class Player {
     let checkY = this.y;
 
     if ( direction === 'UP' ) {
-      checkY -= this.speed;
+      checkY -= this.speed + (this.settings.COLLISION_PRED.UP || 18);
     }
 
     if ( direction === 'DOWN' ) {
-      checkY += this.speed + 18;
+      checkY += this.speed + (this.settings.COLLISION_PRED.DOWN || 18);
     }
 
     if ( direction === 'RIGHT' ) {
-      checkX += this.speed + 10;
+      checkX += this.speed + (this.settings.COLLISION_PRED.RIGHT || 10);
     }
 
     if ( direction === 'LEFT' ) {
-      checkX -= this.speed + 10;
+      checkX -= this.speed + (this.settings.COLLISION_PRED.LEFT || 10);
     }
     
     const canvasWSpace = (this.game.canvas.width / 2);
     const canvasHSpace = (this.game.canvas.height / 2);
-    checkX = Math.floor((checkX + canvasWSpace) / 32);
-    checkY = Math.floor((checkY + canvasHSpace) / 32);
-    
+    checkX = Math.floor((checkX + canvasWSpace) / this.spriteSize);
+    checkY = Math.floor((checkY + canvasHSpace) / this.spriteSize);
     const tileIndex = Math.floor(checkY * 100 + checkX);
     
-    if ( collisionLayer.data[tileIndex] === 799 ) {
+    if ( collisionLayer.data[tileIndex] === this.game.settings.collisionID ) {
       return true;
     }
 
@@ -124,8 +134,8 @@ class Player {
         }
       }
       
-      if ( this.speed < 5 ) {
-        this.speed += 0.08;
+      if ( this.speed < (this.settings.MAX_SPEED || 5) ) {
+        this.speed += this.settings.SPEED || 0.08;
       }
     } else {
       this.speed = 0;
@@ -156,6 +166,6 @@ class Player {
 
 
   debug() {
-    DEBUG_BAR.innerText = `Player X: ${this.x / this.spriteSize} - Player.Y: ${this.y / this.spriteSize}`
+    DEBUG_BAR.innerText = `Player X: ${(this.x / this.spriteSize).toFixed(3)} - Player.Y: ${(this.y / this.spriteSize).toFixed(3)} - Speed: ${this.speed.toFixed(3)}`
   }
 }

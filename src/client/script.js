@@ -1,8 +1,23 @@
-const game = new Game();
-const map = new Map(game);
+const GAME_SETTINGS = {
+  collisionID: 369
+};
+
+const PLAYER_SETTINGS = {
+  MAX_SPEED: 3.5,
+  SPEED: 0.1,
+  COLLISION_PRED: {
+    LEFT: 4,
+    RIGHT: 6,
+    UP: 6,
+    DOWN: 6
+  }
+}
+
+const game     = new Game(GAME_SETTINGS);
+const map      = new Map(game);
 const keyboard = new Keyboard();
-const camera = new Camera(map);
-const player = new Player(game);
+const camera   = new Camera(map);
+const player   = new Player(game, PLAYER_SETTINGS);
 
 // gameloop
 game.gameloop(() => {

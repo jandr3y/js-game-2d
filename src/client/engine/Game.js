@@ -1,8 +1,9 @@
 class Game {
 
-  constructor() {
+  constructor(settings = {}) {
     this.canvas = document.getElementById('root');
     this.context = this.canvas.getContext('2d');
+    this.settings = settings;
   }
 
   gameloop(fn = null) {

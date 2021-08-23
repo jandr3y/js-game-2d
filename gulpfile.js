@@ -38,7 +38,9 @@ function buildJS(cb) {
 function buildAssets(cb) {
   src([
     'src/client/assets/map_one.json',
+    'src/client/assets/map_two.json',
     'src/client/assets/tileset.png',
+    'src/client/assets/base_out_atlas.png',
     'src/client/assets/person.png',
   ])
   .pipe(dest('./dist/client/assets'));
