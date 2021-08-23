@@ -1,0 +1,53 @@
+body, html {
+  height: 100%;
+  min-height: 100% !important;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+canvas {
+  border: 1px solid black;
+  width: 960px;
+}
+
+.screen {
+  position: relative;
+}
+
+#chat {
+  position: absolute;
+  bottom: 0;
+  
+}
+
+#debug {
+  position: absolute;
+  top: -20px;
+  width: 920px;
+}
+
+#chat input {
+  width: 920px;
+  background: black;
+  color: yellow;
+  height: 45px;
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+  padding-left: 15px;
+}
+
+#menu {
+  position: absolute;
+  right: 0;
+  top: 0;
+  background: gray;
+  width: 50px;
+  height: 100%;
+}
