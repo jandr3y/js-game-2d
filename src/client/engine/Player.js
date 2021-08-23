@@ -11,8 +11,8 @@ class Player {
     this.speed = 0;
     this.maxX = (100 * map.tileSize) - game.canvas.width;
     this.maxY = (100 * map.tileSize) - game.canvas.height;
-    this.x = 150;
-    this.y = 200;
+    this.x = 300;
+    this.y = 400;
   }
 
   load() {
@@ -56,31 +56,37 @@ class Player {
       return true;
     }
 
-    let checkX = this.x / 32;
-    let checkY = this.y / 32;
+    let checkX = this.x;
+    let checkY = this.y;
+
     if ( direction === 'UP' ) {
-      checkY -= 0.5;
+      checkY -= this.speed;
     }
 
     if ( direction === 'DOWN' ) {
-      checkY += 1;
+      checkY += this.speed + 18;
     }
 
     if ( direction === 'RIGHT' ) {
-      checkX += 1;
+      checkX += this.speed + 10;
     }
 
     if ( direction === 'LEFT' ) {
-      checkX -= 1;
+      checkX -= this.speed + 10;
+    }
+    
+    const canvasWSpace = (this.game.canvas.width / 2);
+    const canvasHSpace = (this.game.canvas.height / 2);
+    checkX = Math.floor((checkX + canvasWSpace) / 32);
+    checkY = Math.floor((checkY + canvasHSpace) / 32);
+    
+    const tileIndex = Math.floor(checkY * 100 + checkX);
+    
+    if ( collisionLayer.data[tileIndex] === 799 ) {
+      return true;
     }
 
-    const tileIndex = Math.floor((checkX * 100) + checkY);
-
-    if ( collisionLayer.data[tileIndex] === 0 ) {
-      return false;
-    } else {
-      return false;
-    }
+    return false;
   }
 
   movement({ KEYS }, collisionLayer = null) {
@@ -150,6 +156,6 @@ class Player {
 
 
   debug() {
-    DEBUG_BAR.innerText = `Player X: ${this.x} - Player.Y: ${this.y}`
+    DEBUG_BAR.innerText = `Player X: ${this.x / this.spriteSize} - Player.Y: ${this.y / this.spriteSize}`
   }
 }

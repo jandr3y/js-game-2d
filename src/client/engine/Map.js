@@ -20,7 +20,7 @@ class Map {
   }
 
 
-  render(camera) {
+  render(camera, up = false) {
 
     if ( !this.tilemap ) {
       return;
@@ -39,15 +39,25 @@ class Map {
     const layersCount = Array.from(this.tilemap.layers).length;
 
     for ( let l = 0; l < layersCount; l++ ) {
+
+      if ( up ) {
+        if ( this.tilemap.layers[l].name.indexOf('_UP') === -1 ) {
+          continue;
+        }
+      }
+
       tileIndex = (startRow * 100) + startCol;
       
       for ( let r = startRow; r < endRow; r++) {
         for ( let c = startCol; c < endCol; c++ ) {
+          
           if ( this.tilemap.layers[l].name === 'Colision' ) {
             continue;
           }
 
           const tileID = this.tilemap.layers[l].data[tileIndex];
+
+
           if ( tileID === 0 ) { 
             tileIndex++;
             continue; 

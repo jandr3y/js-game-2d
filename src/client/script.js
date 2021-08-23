@@ -9,13 +9,14 @@ game.gameloop(() => {
   player.changeDirection(keyboard);
   
   if ( map.tilemap ) {
-    player.movement(keyboard, map.tilemap.layers[3]);
+    player.movement(keyboard, map.tilemap.layers[4]);
   }
 
   camera.follow(player);
 
   map.render(camera);
   player.render(camera);
+  map.render(camera, true);
 
   player.debug();
 });

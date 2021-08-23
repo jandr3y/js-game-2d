@@ -1,0 +1,30 @@
+{
+  "name": "js-game-2d",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Camera.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "node node_modules/.bin/gulp build",
+    "build-client": "node node_modules/.bin/gulp buildClient",
+    "clean": "node node_modules/.bin/gulp clean"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jandr3y/js-game-2d.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jandr3y/js-game-2d/issues"
+  },
+  "homepage": "https://github.com/jandr3y/js-game-2d#readme",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-minify": "^3.1.0",
+    "gulp-template": "^5.0.0",
+    "gulp-uglify": "^3.0.2"
+  }
+}
