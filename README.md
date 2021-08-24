@@ -7,10 +7,10 @@
 
 **Obs.: O game não funciona se não for hospedado devido ao fetch do mapa, então após buildar é necessário rodar um live-server dentro da pasta dist/client ou jogar a pasta dentro de um servidor apache, nginx tanto faz...**
 
-### TODO:
-- Criar gulp para desenvolvimento
+# TODO
+- corrigir speed dos jogadores
 - melhorar colisao
-- multiplayer
+- multiplayer (doing)
 - chat
 - desenhar as sprites proprias
 - teleports
