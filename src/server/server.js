@@ -28,6 +28,6 @@ io.on('connection', socket => {
   })
 })
 
-server.listen(3000, () => {
+server.listen(3000, '192.168.100.6', () => {
   console.log('Servidor Rodando')
 });

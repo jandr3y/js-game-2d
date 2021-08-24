@@ -1,8 +1,8 @@
 class Socket {
 
   constructor(settings) {
-    this.socket = io("http://localhost:3000"); 
-    this.lastPlayersPosition = {};
+    this.socket = io("http://177.7.145.24:3000"); 
+    this.lastPlayersData = {};
     this.uid = settings.UID;
 
     this.players = {};
@@ -13,18 +13,21 @@ class Socket {
   }
 
   onMovement(cb) {
-    this.socket.on('player_move', data => {
-      this.lastPlayersPosition[data.UID] = { x: data.x, y: data.y };
-      if (cb) cb();
-    });
+    this.socket.on('player_move', cb);
   }
 
   playerMovement(player) {
-    const { x, y } = this.lastPlayersPosition[this.uid] ?? { x: 0, y: 0 };
-    this.lastPlayersPosition[this.uid] = { x: player.x, y: player.y, ...this.identify() };
+    const { x, y } = this.lastPlayersData[this.uid] ?? { x: 0, y: 0, d: 0, s: 0 };
+    this.lastPlayersData[this.uid] = { 
+      x: player.x, 
+      y: player.y,
+      d: player.direction,
+      s: player.speed, 
+      ...this.identify() 
+    };
     
     if ( player.x !== x || player.y !== y ) {
-      this.socket.emit('movement', this.lastPlayersPosition[this.uid]);
+      this.socket.emit('movement', this.lastPlayersData[this.uid]);
     }
   }
 

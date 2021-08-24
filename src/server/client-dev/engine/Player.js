@@ -23,14 +23,18 @@ class Player {
     });
   }
 
-  render(pos) {
+  render(pos, camera) {
 
-    let canvasX, canvasY = 0;
+    let canvasX, canvasY, direction, speed = 0;
 
     if ( pos ) {
-      canvasX = (pos.x / 30);
-      canvasY = (pos.y / 20);
+      speed   = pos.s;
+      canvasX = pos.x - (camera.x - (camera.width / 2)) - 16;
+      canvasY = pos.y - (camera.y - (camera.height / 2)) - 16;
+      direction = pos.d;
     } else {
+      direction = this.direction;
+      speed = this.speed;
       canvasX = (this.game.canvas.width / 2) - 16;
       canvasY = (this.game.canvas.height / 2) - 16;
     }
@@ -46,7 +50,7 @@ class Player {
       this.frameIndex = 0;
     }
 
-    if ( this.speed > 4 ) {
+    if ( speed > 4 ) {
       this.tickPerFrame = 3;
       this.game.context.drawImage(
         this.sprite, 
@@ -59,11 +63,11 @@ class Player {
         this.spriteSize, 
         this.spriteSize
       );
-    } else if ( this.speed > 0 ) {
+    } else if ( speed > 0 ) {
       this.tickPerFrame = 10;
-      this.game.context.drawImage(this.sprite, this.frameIndex * this.spriteSize, this.direction * this.spriteSize, this.spriteSize, this.spriteSize, canvasX, canvasY, this.spriteSize, this.spriteSize);
+      this.game.context.drawImage(this.sprite, this.frameIndex * this.spriteSize, direction * this.spriteSize, this.spriteSize, this.spriteSize, canvasX, canvasY, this.spriteSize, this.spriteSize);
     } else {
-      this.game.context.drawImage(this.sprite, this.spriteSize, this.direction * this.spriteSize, this.spriteSize, this.spriteSize, canvasX, canvasY, this.spriteSize, this.spriteSize);
+      this.game.context.drawImage(this.sprite, this.spriteSize, direction * this.spriteSize, this.spriteSize, this.spriteSize, canvasX, canvasY, this.spriteSize, this.spriteSize);
     }
 
   }

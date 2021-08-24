@@ -24,6 +24,7 @@ const camera   = new Camera(map);
 const player   = new Player(game, PLAYER_SETTINGS);
 const socket   = new Socket(SOCKET_SETTINGS);
 
+let renderCache = {};
 // gameloop
 game.gameloop(() => {
   player.changeDirection(keyboard);
@@ -36,14 +37,21 @@ game.gameloop(() => {
 
   map.render(camera);
   player.render();
-  map.render(camera, true);
 
-  Object.keys(socket.lastPlayersPosition).map( index => {
-    if ( index !== SOCKET_SETTINGS.UID ) {
-      const playerPosition = socket.lastPlayersPosition[index];
-      player.render(playerPosition);
+  Object.keys(socket.lastPlayersData).map( index  => {
+    const playerData = socket.lastPlayersData[index];
+    
+    if( renderCache[index] && renderCache[index].s === playerData.s ) {
+      playerData.s = 0;
     }
-  });
+
+    if ( playerData.UID !== SOCKET_SETTINGS.UID && camera.isBoundarie(playerData) ) {
+      renderCache[index] = playerData;
+      player.render(playerData, camera);
+    }
+  })
+
+  map.render(camera, true);
 
   player.debug();
 
@@ -55,8 +63,9 @@ game.run(async () => {
   await player.load();
   keyboard.listen();
   
-  game.event(() => socket.playerMovement(player), 200);
+  game.event(() => socket.playerMovement(player), 1);
 
-  socket.onMovement(() => { console.log('hi')
+  socket.onMovement(data => {
+    socket.lastPlayersData[data.UID] = { ...data };
   })
 });

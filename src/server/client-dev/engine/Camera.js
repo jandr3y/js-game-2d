@@ -14,5 +14,13 @@ class Camera {
     this.x = entity.x;
     this.y = entity.y;
   }
+
+  isBoundarie({ x, y }){
+    const minX = this.x - (this.width / 2);
+    const maxX = this.x + (this.width / 2); 
+    const minY = this.y - (this.height / 2);
+    const maxY = this.y + (this.height / 2); 
+    return x > minX && x < maxX && y > minY && y < maxY;
+  }
   
 }

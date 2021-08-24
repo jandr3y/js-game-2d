@@ -9,7 +9,7 @@
     "build-client": "node node_modules/.bin/gulp buildClient",
     "clean": "node node_modules/.bin/gulp clean",
     "watch": "node node_modules/.bin/gulp watch",
-    "start": "node node_modules/.bin/nodemon src/server/server.js"
+    "start": "npx nodemon src/server/server.js"
   },
   "repository": {
     "type": "git",
