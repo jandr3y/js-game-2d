@@ -29,8 +29,8 @@ class Player {
 
     if ( pos ) {
       speed   = pos.s;
-      canvasX = pos.x - (camera.x - (camera.width / 2)) - 16;
-      canvasY = pos.y - (camera.y - (camera.height / 2)) - 16;
+      canvasX = Math.round(pos.x - (camera.x - (camera.width / 2)) - 16);
+      canvasY = Math.round(pos.y - (camera.y - (camera.height / 2)) - 16);
       direction = pos.d;
     } else {
       direction = this.direction;

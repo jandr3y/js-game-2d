@@ -3,7 +3,7 @@ const GAME_SETTINGS = {
 };
 
 const PLAYER_SETTINGS = {
-  MAX_SPEED: 3.5,
+  MAX_SPEED: 1.5,
   SPEED: 0.1,
   COLLISION_PRED: {
     LEFT: 4,
