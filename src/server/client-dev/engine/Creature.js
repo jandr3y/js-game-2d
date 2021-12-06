@@ -5,7 +5,7 @@ class Creature {
     this.settings     = settings;
     this.spriteSize   = 32;
     this.tick         = 0;
-    this.tickPerFrame = 10;
+    this.tickPerFrame = 16;
     this.frameIndex   = 0;
     this.maxFrame     = 3;
     this.direction    = 0;
@@ -26,21 +26,20 @@ class Creature {
 
     let canvasX, canvasY, direction, speed = 0;
 
+    // if position is passed as parameter, 
     if ( pos ) {
       speed   = pos.s;
-      canvasX = Math.round(pos.x - (camera.x - (camera.width / 2)) - 16);
-      canvasY = Math.round(pos.y - (camera.y - (camera.height / 2)) - 16);
+      canvasX = Math.round(pos.x - (camera.x - (camera.width / 2)) - this.spriteSize);
+      canvasY = Math.round(pos.y - (camera.y - (camera.height / 2)) - this.spriteSize);
       direction = pos.d;
     } else {
       direction = this.direction;
       speed = this.speed;
-      canvasX = (this.game.canvas.width / 2) - 16;
-      canvasY = (this.game.canvas.height / 2) - 16;
+      canvasX = (this.game.canvas.width / 2) - this.spriteSize;
+      canvasY = (this.game.canvas.height / 2) - this.spriteSize;
     }
 
-    this.tick++;
-
-    if ( this.tick > this.tickPerFrame ) {
+    if ( ++this.tick > this.tickPerFrame ) {
       this.frameIndex++;
       this.tick = 0;
     }
@@ -63,14 +62,13 @@ class Creature {
         this.spriteSize
       );
     } else if ( speed > 0 ) {
-      this.tickPerFrame = 10;
       this.game.context.drawImage(this.sprite, this.frameIndex * this.spriteSize, direction * this.spriteSize, this.spriteSize, this.spriteSize, canvasX, canvasY, this.spriteSize, this.spriteSize);
     } else {
       this.game.context.drawImage(this.sprite, this.spriteSize, direction * this.spriteSize, this.spriteSize, this.spriteSize, canvasX, canvasY, this.spriteSize, this.spriteSize);
     }
   }
 
-  movement({ KEYS }, collisionLayer = null) {
+  movement({ KEYS }, collisionLayer = null, mappedColisionLayer = null) {
     
     if ( KEYS.ArrowDown || KEYS.ArrowLeft || KEYS.ArrowUp || KEYS.ArrowRight ) {
       if ( KEYS.ArrowDown ) {
@@ -93,6 +91,11 @@ class Creature {
         if ( !this.checkColision(collisionLayer, 'RIGHT') ) {
           this.x += this.speed;
         } else {
+          // if ( mappedColisionLayer && player ) {
+          //   const path = new Graph(mappedColisionLayer);
+          //   const result = astar.search(graph, path.grid[this.x][this.y], path.grid[player.x][player.y]);
+          //   console.log(result)
+          // }
           this.speed = 0;
         }
       } 

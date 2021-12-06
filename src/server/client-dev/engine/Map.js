@@ -16,6 +16,15 @@ class Map {
         .then( response => response.json() )
         .then( jsonMap => {
           this.tilemap = jsonMap;
+          
+          if ( Array.isArray(jsonMap.layers) ) {
+            jsonMap.layers.forEach( layer => {
+              if ( layer.name.indexOf('Colision') !== -1 ) {
+                this.colisionMatrix = this.reshape(layer.data, 100, 100);
+              }
+            })
+          }
+
           this.tileset.src = 'assets/base_out_atlas.png';
           this.tileset.addEventListener('load', () => {
             this.imageColumns = this.tileset.width / this.tileSize;
@@ -97,5 +106,23 @@ class Map {
       }
     }
   }
-  
+ 
+  // map 1d vector to 2d vector
+  reshape(array, rows, cols) {
+    const copy = array.slice(0);
+    const mapped = [];
+
+    for (var r = 0; r < rows; r++) {
+      const row = [];
+      for (var c = 0; c < cols; c++) {
+        var i = r * cols + c;
+        if (i < copy.length) {
+          row.push((copy[i] == 0 ? 0 : 1));
+        }
+      }
+      mapped.push(row);
+    }
+
+    return mapped;
+  }
 }
