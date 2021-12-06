@@ -6,6 +6,7 @@ class Map {
     this.game         = game;
     this.imageColumns = 0;
     this.mapColumns   = 100;
+    this.colisionMatrix = [];
   }
 
   load() {
@@ -54,6 +55,7 @@ class Map {
       tileIndex = (startRow * this.mapColumns) + startCol;
       
       for ( let r = startRow; r < endRow; r++) {
+
         for ( let c = startCol; c < endCol; c++ ) {
           
           if ( this.tilemap.layers[l].name === 'Colision' ) {

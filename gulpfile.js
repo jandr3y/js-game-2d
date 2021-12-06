@@ -6,7 +6,7 @@ const uglify = require('gulp-uglify');
 const template = require('gulp-template');
 
 const BUILD_PATH = './src/server/client';
-const SRC_PATH = 'src/client';
+const SRC_PATH = 'src/server/client-dev';
 
 const buildVersion = 'g-' + (new Date()).getTime();
 

@@ -3,8 +3,21 @@ const GAME_SETTINGS = {
 };
 
 const PLAYER_SETTINGS = {
+  SPRITE: 'assets/person.png',
   MAX_SPEED: 1.5,
-  SPEED: 0.1,
+  SPEED_AG: 0.8,
+  COLLISION_PRED: {
+    LEFT: 4,
+    RIGHT: 6,
+    UP: 6,
+    DOWN: 6
+  }
+}
+
+const MONSTER_SETTINGS = {
+  SPRITE: 'assets/bat.png',
+  MAX_SPEED: 0.8,
+  SPEED_AG: 0.02,
   COLLISION_PRED: {
     LEFT: 4,
     RIGHT: 6,
@@ -22,6 +35,7 @@ const map      = new Map(game);
 const keyboard = new Keyboard();
 const camera   = new Camera(map);
 const player   = new Player(game, PLAYER_SETTINGS);
+const monster  = new Monster(game, MONSTER_SETTINGS)
 const socket   = new Socket(SOCKET_SETTINGS);
 
 let renderCache = {};
@@ -31,13 +45,14 @@ game.gameloop(() => {
   
   if ( map.tilemap ) {
     player.movement(keyboard, map.tilemap.layers[4]);
+    socket.simulateMonsterMovement(player, monster, map.tilemap.layers[4]);
   }
 
   camera.follow(player);
 
   map.render(camera);
   player.render();
-
+  
   Object.keys(socket.lastPlayersData).map( index  => {
     const playerData = socket.lastPlayersData[index];
     
@@ -48,6 +63,14 @@ game.gameloop(() => {
     if ( playerData.UID !== SOCKET_SETTINGS.UID && camera.isBoundarie(playerData) ) {
       renderCache[index] = playerData;
       player.render(playerData, camera);
+    }
+  });
+
+  Object.keys(socket.lastMonstersData).map( index => {
+    const monsterData = socket.lastMonstersData[index];
+
+    if ( camera.isBoundarie(monsterData) ) {
+      monster.render(monsterData, camera);
     }
   })
 
@@ -61,6 +84,7 @@ game.gameloop(() => {
 game.run(async () => {
   await map.load();
   await player.load();
+  await monster.load();
   keyboard.listen();
   
   game.event(() => socket.playerMovement(player), 1);
