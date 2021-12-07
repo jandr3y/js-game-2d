@@ -45,7 +45,7 @@ game.gameloop(() => {
   
   if ( map.tilemap ) {
     player.movement(keyboard, map.tilemap.layers[4]);
-    socket.simulateMonsterMovement(player, monster, map.tilemap.layers[4]);
+    monster.movement(map.tilemap.layers[4], map.colisionMatrix);
   }
 
   camera.follow(player);
@@ -66,13 +66,7 @@ game.gameloop(() => {
     }
   });
 
-  Object.keys(socket.lastMonstersData).map( index => {
-    const monsterData = socket.lastMonstersData[index];
-
-    if ( camera.isBoundarie(monsterData) ) {
-      monster.render(monsterData, camera);
-    }
-  })
+  monster.render({ x: monster.x, y: monster.y, s: monster.speed, d: monster.direction }, camera);
 
   map.render(camera, true);
 
@@ -85,6 +79,7 @@ game.run(async () => {
   await map.load();
   await player.load();
   await monster.load();
+  monster.setEnemy(player);
   keyboard.listen();
   
   game.event(() => socket.playerMovement(player), 1);

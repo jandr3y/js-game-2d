@@ -29,14 +29,14 @@ class Creature {
     // if position is passed as parameter, 
     if ( pos ) {
       speed   = pos.s;
-      canvasX = Math.round(pos.x - (camera.x - (camera.width / 2)) - this.spriteSize);
-      canvasY = Math.round(pos.y - (camera.y - (camera.height / 2)) - this.spriteSize);
+      canvasX = Math.round(pos.x - (camera.x - (camera.width / 2)) - (this.spriteSize / 2));
+      canvasY = Math.round(pos.y - (camera.y - (camera.height / 2)) - (this.spriteSize / 2));
       direction = pos.d;
     } else {
       direction = this.direction;
       speed = this.speed;
-      canvasX = (this.game.canvas.width / 2) - this.spriteSize;
-      canvasY = (this.game.canvas.height / 2) - this.spriteSize;
+      canvasX = (this.game.canvas.width / 2) - (this.spriteSize / 2);
+      canvasY = (this.game.canvas.height / 2) - (this.spriteSize / 2);
     }
 
     if ( ++this.tick > this.tickPerFrame ) {
@@ -91,11 +91,6 @@ class Creature {
         if ( !this.checkColision(collisionLayer, 'RIGHT') ) {
           this.x += this.speed;
         } else {
-          // if ( mappedColisionLayer && player ) {
-          //   const path = new Graph(mappedColisionLayer);
-          //   const result = astar.search(graph, path.grid[this.x][this.y], path.grid[player.x][player.y]);
-          //   console.log(result)
-          // }
           this.speed = 0;
         }
       } 
@@ -157,9 +152,10 @@ class Creature {
     return false;
   }
 
+  changeDirection(event = null) {
 
+    const { KEYS } = event;
 
-  changeDirection({ KEYS }) {
     if ( KEYS.ArrowUp ) {
       this.direction = 3;
     }
