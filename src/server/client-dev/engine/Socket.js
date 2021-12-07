@@ -56,7 +56,8 @@ class Socket {
       monsterData.x = monster.x;
       monsterData.y = monster.y;
       monster.changeDirection(fakeKeyboard);
-      monster.movement(fakeKeyboard, colisionLayer)
+      
+      monster.movement(fakeKeyboard, colisionLayer, map.colisionMatrix)
     })
   }
 }
