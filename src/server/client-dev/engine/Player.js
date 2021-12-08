@@ -8,6 +8,6 @@ class Player extends Creature {
 
 
   debug() {
-    DEBUG_BAR.innerText = `Player X: ${(this.x / this.spriteSize).toFixed(3)} - Player.Y: ${(this.y / this.spriteSize).toFixed(3)} - Speed: ${this.speed.toFixed(3)}`
+    DEBUG_BAR.innerText = `Player X: ${(this.x).toFixed(3)} - Player.Y: ${(this.y).toFixed(3)} - Speed: ${this.speed.toFixed(3)}`
   }
 }

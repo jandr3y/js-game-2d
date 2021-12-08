@@ -12,7 +12,7 @@ class Map {
   load() {
     return new Promise((resolve, reject) => {
 
-      fetchLocal('assets/map_two.json')
+      fetchLocal('assets/map_two.json?v=3')
         .then( response => response.json() )
         .then( jsonMap => {
           this.tilemap = jsonMap;

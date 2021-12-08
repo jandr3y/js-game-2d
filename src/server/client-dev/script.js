@@ -7,10 +7,10 @@ const PLAYER_SETTINGS = {
   MAX_SPEED: 1.5,
   SPEED_AG: 0.8,
   COLLISION_PRED: {
-    LEFT: 4,
-    RIGHT: 6,
-    UP: 6,
-    DOWN: 6
+    LEFT: 16,
+    RIGHT: 16,
+    UP: 16,
+    DOWN: 16
   }
 }
 
@@ -19,10 +19,10 @@ const MONSTER_SETTINGS = {
   MAX_SPEED: 0.8,
   SPEED_AG: 0.02,
   COLLISION_PRED: {
-    LEFT: 4,
-    RIGHT: 6,
-    UP: 6,
-    DOWN: 6
+    LEFT: 16,
+    RIGHT: 16,
+    UP: 16,
+    DOWN: 16
   }
 }
 
